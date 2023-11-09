@@ -7,7 +7,9 @@ categories: jekyll update
 
 Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyll-talk]。
 
-`_posts`文件夹存放着所有的文章
+`_posts`文件夹存放着所有的文章，想加文章就在里面创建MD，要注意命名一定是`日期-标题`。  
+`_drafts`文件夹存放着所有的草稿，想看草稿就用jekyll serve --drafts。  
+
 
 {% highlight ruby %}
 def print_hi(name)
