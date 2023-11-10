@@ -28,6 +28,21 @@ Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyl
 - `_site`：存放着所有由Jekyll处理生成的Html，可以理解为最终商店，我们不用管这个文件夹，git也应该忽略这个文件夹。
 - `Gemfile.lock`和`Gemfile`：这两个文件和依赖有关，我们也不用管。
 
+#### 4、_config.yml
+注意，每次修改配置文件之后，要重启Jekyll serve才能看到效果。
+- 范围配置默认头信息：
+{% highlight ruby %}
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      title: "默认标题"
+{% endhighlight %}
+根目录下所有博客默认布局为`post`，默认标题为`默认标题`。将path改为某一路径，则指定其文件夹内的博客。
+
 ## 二、撰写博客
 #### 1、文件夹
 - `_drafts`文件夹存放着所有的草稿，想看草稿就用jekyll serve --drafts。  
@@ -43,8 +58,11 @@ Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyl
 #### 2、头信息
 - `layout`：如果设置的话，会指定使用该模板文件。指定模板文件时候不需要文件扩展名。模板文件必须放在`_layouts`目录下。
 - `title`：文章标题，设置以自适应模板。
+- `date`：这里的日期会覆盖文章名字中的日期。这样就可以用来保障文章排序的正确。日期的具体格式为YYYY-MM-DD HH:MM:SS +/-TTTT；时，分，秒和时区都是可选的。
 - `permalink`：永久链接。设置这个变量，然后变量值就会作为最终的URL地址。  
 点开一篇博客，观察浏览器地址，你会发现它是由`categories`加上日期加上标题组成的，这样一旦我们对其中某一项进行了更改，原网址就404了。永久链接就是解决这件事情的，你可以通过`permalink: `自定义其路径，其默认为`permalink: date`即`/:categories/:year/:month/:day/:title.html`，你可以进行增删，甚至直接自定义`permalink: /Jekyll/`。
+- `published`：如果你不想在站点生成后展示某篇特定的博文，那么就设置（该博文的）该变量为 false。  
+
 
 #### 3、文章摘要
 - 对于_posts里的每一篇文章，Jekyll会自动提取第一段文字或者说第一次出现`excerpt_separator`的地方作为此文章的摘要。  
