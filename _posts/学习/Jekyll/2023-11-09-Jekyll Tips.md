@@ -2,7 +2,8 @@
 layout: post
 title:  "Jekyll Tips"
 date:   2023-11-09 
-categories: jekyll update
+categories: Jekyll
+permalink: /:categories/:title
 ---
 
 Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyll-talk]。  
@@ -56,8 +57,12 @@ print_hi('Tom')
 #=> prints 'Hi, Tom' to STDOUT.
 {% endhighlight %}
 
+#### 4、永久链接
+点开一篇博客，观察浏览器地址，你会发现它是由`categories`加上日期加上标题组成的，这样一旦我们对其中某一项进行了更改，原网址就404了。  
+永久链接就是解决这件事情的，你可以通过`permalink: `自定义其路径，其默认为`permalink: date`即`/:categories/:year/:month/:day/:title.html`，你可以进行增删，甚至直接自定义`permalink: /Jekyll/`。
+
 ## 创建页面
-默认Jekyll有两个页面，即根目录下的index和about。如需创建新界面，只要新增MD文件即可，头上标记出样式、标题、和永久链接即可。
+默认Jekyll有两个页面，即根目录下的index和about。如需创建新界面，只要新增MD文件即可，头上标记出样式、标题即可。
 
 [jekyll-docs]: https://jekyllrb.com/docs/home
 [jekyll-gh]:   https://github.com/jekyll/jekyll
