@@ -33,7 +33,10 @@ Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyl
   </ul>
 
 #### 3、内容
-- 引用图片：![生离死别]({{ site.url }}/assets/生离死别.png)  
+- 引用图片，可以通过属性控制居中和大小等：
+{:refdef: style="text-align: center;"}
+![生离死别]({{ site.url }}/assets/生离死别.png){:width="512"}  
+{: refdef}
 - 下载PDF：[下载 测试PDF]({{ site.url }}/assets/测试用.pdf)。  
 - 链接到其他博文：[第一篇博客]({% post_url 2023-11-09-MyFirstBlogTry %})  [Jekyll文件夹下的Jekyll Tips]({% post_url 2023-11-09-Jekyll Tips %})
 - 高亮代码：
