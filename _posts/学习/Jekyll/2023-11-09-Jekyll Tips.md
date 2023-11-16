@@ -9,6 +9,7 @@ permalink: /:categories/:title
 本文记录Jekyll使用中的一些要点，其中内容来自官方文档和网络上的博客，目的在于方便自己写博客和后续的唤起记忆，所以不会有详尽的使用教程，新手还是建议看官方教程，然后用此文查找自己需要的部分。
 
 Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyll-talk]。  
+[主题下载][jekyll-theme]
 
 ## 一、配置环境和初步理解
 
@@ -100,9 +101,48 @@ print_hi('Tom')
 #=> prints 'Hi, Tom' to STDOUT.
 {% endhighlight %}
 
-## 三、创建页面
+#### 5、创建页面
 默认Jekyll有两个页面，即根目录下的index和about。如需创建新界面，只要新增MD文件即可，头上标记出样式、标题即可。
+
+## 三、程序化使用Jekyll
+#### 1、内建变量
+[官方变量详解][jekyll-variables]
+- site  
+来自配置文件，可以访问全站范围的信息。当时运行的时间、页面清单、博客清单、标签帖子……
+- page  
+访问页面的信息。页面的源内容、标题、日期、标签、下一篇文章、上一篇文章……
+- paginator  
+访问分页器信息。每页博客数量、当前页号、博客总数、上下页的页号和地址……
+
+#### 2、自建变量
+Jekyll可以从_data文件夹下的YAML、JSON、CSV载入数据。  
+随后可以通过 site.data.文件名 来访问其内容。
+
+#### 3、语句
+- for语句
+{% for XXX in XXX.XXX %}
+{% endfor %}
+- if语句
+{% if XXX == XXX %}
+{% endif %}
+
+
+## 四、样式主题
+样式主题主要是三个文件夹在起作用：布局文件、包含文件和样式表。  
+Jekyll有默认的布局文件、包含文件和样式表。例如默认主页布局home，页面布局page，博客布局post。   
+我们可以通过在各个文件夹下新建同名样式来覆盖默认布局，即jekyll会优先选择文件夹下我们创建的样式。   
+
+#### 1、布局文件
+布局文件放在_layout文件夹下，它指定了页面要如何排版显示。
+#### 2、包含文件
+可以理解为可复用组件，比如将一些心仪的页脚排版放到这里，然后不同的布局使用一个心仪的排版。
+#### 3、样式表
+就是样式咯。
+
 
 [jekyll-docs]: https://jekyllrb.com/docs/home
 [jekyll-gh]:   https://github.com/jekyll/jekyll
 [jekyll-talk]: https://talk.jekyllrb.com/
+[jekyll-theme]: https://rubygems.org
+[jekyll-variables]: http://jekyllcn.com/docs/variables/
+
