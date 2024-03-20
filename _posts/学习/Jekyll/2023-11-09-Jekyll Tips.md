@@ -19,7 +19,7 @@ Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyl
 这边也不细说，就是你要按照jekyll官方文档给出的友链进行安装。
 
 #### 3、使用Jekyll在库里进行新建
-使用命令行执行**jekyll new 指定路径文件夹**，然后在此文件夹下执行**jekyll serve**来运行本地模拟，最后通过命令行里提到的网址在网页上查看效果。  
+使用命令行执行**jekyll new 指定路径文件夹**，这会在你指定的文件夹生成jekyll项目。  
 本地生成文件：
 ![Jekyll new]({{ site.url }}/assets/JekyllNew.png){:width="512"}  
 - **index**、**about**和**404**：index是主页，你会发现其内容就只有一个模板。about是相关页。404就是404。  
@@ -28,6 +28,7 @@ Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyl
 - **_site**：存放着所有由Jekyll处理生成的Html，可以理解为最终商店，我们不用管这个文件夹，git也应该忽略这个文件夹。
 - **Gemfile.lock**和**Gemfile**：这两个文件和依赖有关，我们也不用管。
 
+然后在此文件夹下执行**jekyll serve**来运行本地模拟，就可以通过命令行里提到的网址在网页上查看效果。
 #### 4、_config.yml
 注意，每次修改配置文件之后，要重启Jekyll serve才能看到效果。
 - 范围配置默认头信息：
