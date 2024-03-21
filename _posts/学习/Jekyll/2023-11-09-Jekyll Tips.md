@@ -49,7 +49,8 @@ defaults:
 - **_drafts**文件夹存放着所有的草稿，想看草稿就用jekyll serve --drafts。  
 - **site.posts**集合了**_posts**下的全部文章，我们可以这样遍历：
   <ul>
-    {% for post in site.posts %}
+    {% assign sortedPosts = site.posts | sort: 'title' %}
+    {% for post in sortedPosts %}
       <li>
         <a href="{{ post.url }}">{{ post.title }}</a>
       </li>
