@@ -12,10 +12,12 @@ permalink: /categories/
 
     <h3 class="category-head">{{ category_name }} ({{ site.categories[category_name].size() }})</h3>
     <a name="{{ category_name | slugize }}"></a>
-    {% for post in site.categories[category_name] %}
-    <article class="archive-item">
-      <h4><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h4>
-    </article>
+
+    {% assign sortedPosts = site.categories[category_name] | sort: 'title' %}
+    {% for post in sortedPosts %}
+      <article class="archive-item">
+        <h4><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h4>
+      </article>
     {% endfor  %}
   </div>
 {% endfor %}
