@@ -13,6 +13,8 @@ AutoHotKey是一款按键辅助工具。可以实现自定义按键映射、自�
 &emsp;[2.1 注释](#注释)  
 &emsp;[2.2 快捷键映射语法](#快捷键映射语法)  
 &emsp;[2.3 特殊字符](#一些需要特殊处理的字符输出)  
+[3 常用功能合集](#常用功能合集)  
+&emsp;[3.1 鼠标连点](#控制鼠标连续点击某个地方)  
 
 ## 下载使用
 [官网](https://www.autohotkey.com/)下载安装之后。在任意位置创建以.ahk结尾的文件即可。编写完内容后，直接运行此ahk，它就会在后台运行程序。  
@@ -61,4 +63,58 @@ return
 ```
 
 
+## 常用功能合集
+#### 控制鼠标连续点击某个地方
+```Cpp
+xpos := 0
+ypos := 0
+
+CapsLock & n::
+{
+    MouseGetPos, xpos, ypos
+    MsgBox,拾取光标坐标x:%xpos%,y:%ypos%
+    return
+}
+
+CapsLock & m::
+{
+    MouseClick, left, %xpos%, %ypos%, 1, 0
+    return
+}
+```
+#### 代码笔记
+```Cpp
+CapsLock & `;::
+Send,{End}
+Send,{Text};
+send,{enter}
+return
+
+CapsLock & c::run calc
+
+CapsLock & F::send {DELETE}
+CapsLock & D::send {BACKSPACE}
+
+CapsLock & I::send {up}
+CapsLock & J::send {left}
+CapsLock & L::send {right}
+CapsLock & K::send {down}
+CapsLock & O::send {END}
+CapsLock & U::send {home}
+
+CapsLock & ENTER::
+send {END}
+SEND {ENTER}
+RETURN
+
+;md笔记中的代码插入，直接大写键+Q
+CapsLock & q::
+send {Text}``````Cpp
+send `n
+send `n
+send {Text}``````
+send {up}
+Send {End}
+return
+```
 
