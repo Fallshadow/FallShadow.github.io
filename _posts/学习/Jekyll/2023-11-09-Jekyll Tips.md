@@ -133,6 +133,14 @@ Jekyll有默认的布局文件、包含文件和样式表。例如默认主页�
 #### 3、样式表
 就是样式咯。
 
+## markdown
+在使用表时，请在表上方留出空行，否则无法使用。
+
+| Syntax    | Description |
+| --------- | ----------- |
+| Header    | Title       |
+| Paragraph | Text        |
+
 
 [jekyll-docs]: https://jekyllrb.com/docs/home
 [jekyll-gh]:   https://github.com/jekyll/jekyll
