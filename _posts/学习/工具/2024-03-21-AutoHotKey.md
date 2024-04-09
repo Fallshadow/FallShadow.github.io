@@ -92,8 +92,8 @@ return
 
 CapsLock & c::run calc
 
-CapsLock & F::send {DELETE}
-CapsLock & D::send {BACKSPACE}
+CapsLock & F::send {BACKSPACE}
+CapsLock & D::send {DELETE}
 CapsLock & S::Send,{Text}_
 
 CapsLock & I::send {up}
