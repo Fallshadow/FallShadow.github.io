@@ -1,7 +1,7 @@
 ---
 layout: page
 title: 工具
-permalink: /categories/game_engine/
+permalink: /categories/tool/
 ---
 <div id="archives">
 {% for category in site.categories %}
