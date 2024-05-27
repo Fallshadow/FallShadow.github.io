@@ -124,7 +124,8 @@ Jekyll可以从_data文件夹下的YAML、JSON、CSV载入数据。
 样式主题主要是三个文件夹在起作用：布局文件、包含文件和样式表。  
 Jekyll有默认的布局文件、包含文件和样式表。例如默认主页布局home，页面布局page，博客布局post。   
 我们可以通过在各个文件夹下新建同名样式来覆盖默认布局，即jekyll会优先选择文件夹下我们创建的样式。   
-[minima默认主题github网址][jekyll-minima]
+[minima默认主题github网址][jekyll-minima]  
+在jekyll文件夹下使用cmd命令 bundle info --path minima 即可搜索默认主题minima所在位置
 
 #### 1、布局文件
 布局文件放在_layout文件夹下，它指定了页面要如何排版显示。
