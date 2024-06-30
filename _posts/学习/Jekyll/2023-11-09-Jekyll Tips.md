@@ -16,7 +16,18 @@ Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyl
 这边不细说，就是你要有github账号然后按照官方教程新建一个github page库，用git软件把它克隆到本地文件夹，现在里面什么东西都没有。
 
 #### 2、Jekyll
-这边也不细说，就是你要按照jekyll官方文档给出的友链进行安装。
+这边也不细说，就是你要按照jekyll官方文档给出的[友链][jekyll-win-download]进行安装。需要注意的一点是，ruby安装时可能会出现密匙错误，这时要手动使用管理员启动CMD，重新进行安装。
+
+gem install bundler jekyll 
+如果不行，就重新执行一次这个
+
+如果你的库是老库，在新环境下使用，那就需要将bundle更新下来，先执行镜像，在进行update
+bundle config mirror.https://rubygems.org https://gems.ruby-china.com
+bundle update
+
+wdm安装失败，就用下面的代码
+gem install wdm -- --with-cflags=-Wno-implicit-function-declaration
+个人搜索据说是3.3ruby在函数声明上和wdm不兼容
 
 #### 3、使用Jekyll在库里进行新建
 使用命令行执行**jekyll new 指定路径文件夹**，这会在你指定的文件夹生成jekyll项目。  
@@ -147,6 +158,9 @@ Jekyll有默认的布局文件、包含文件和样式表。例如默认主页�
 [jekyll-gh]:   https://github.com/jekyll/jekyll
 [jekyll-talk]: https://talk.jekyllrb.com/
 [jekyll-theme]: https://rubygems.org
+[jekyll-win-download]: https://jekyllrb.com/docs/installation/windows/
+
+
 [jekyll-variables]: http://jekyllcn.com/docs/variables/
 [prism-download]:https://prismjs.com/download.html
 [jekyll-minima]:https://github.com/jekyll/minima/tree/master
