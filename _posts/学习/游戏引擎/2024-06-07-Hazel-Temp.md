@@ -27,7 +27,7 @@ https://www.mono-project.com/download/stable/#download-win
 
 据说4.5版本支持类似热更新东西。
 找到对应版本，注意这三个dll
-![](../../../assets/GameEngine/Hazel/9.png)
+![](../../../assets/GameEngine/Hazel/9.png)   
 后面可能会提及
 
 从github拷贝某一个tag版本的mono，
@@ -39,7 +39,7 @@ git clone --recursive https://github.com/mono/mono
 ![](../../../assets/GameEngine/Hazel/11.png)
 
 最后将安装的4.5版本mono移动到编辑器项目
-![](../../../assets/GameEngine/Hazel/10.png)
+![](../../../assets/GameEngine/Hazel/12.png)
 
 ## 代码层
 ### 初始化mono
