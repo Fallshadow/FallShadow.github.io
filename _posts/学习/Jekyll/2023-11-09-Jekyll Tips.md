@@ -18,16 +18,24 @@ Jekyll的[官方文档][jekyll-docs]、[GitHub repo][jekyll-gh]、[论坛][jekyl
 #### 2、Jekyll
 这边也不细说，就是你要按照jekyll官方文档给出的[友链][jekyll-win-download]进行安装。需要注意的一点是，ruby安装时可能会出现密匙错误，这时要手动使用管理员启动CMD，重新进行安装。
 
-gem install bundler jekyll 
-如果不行，就重新执行一次这个
+如果不行，就重新执行一次这个  
+gem install bundler jekyll   
 
-如果你的库是老库，在新环境下使用，那就需要将bundle更新下来，先执行镜像，在进行update
-bundle config mirror.https://rubygems.org https://gems.ruby-china.com
+如果你的库是老库，在新环境下使用，那就需要将bundle更新下来，先执行镜像，再进行update  
+bundle config mirror.https://rubygems.org https://gems.ruby-china.com  
 bundle update
 
-wdm安装失败，就用下面的代码
-gem install wdm -- --with-cflags=-Wno-implicit-function-declaration
+wdm安装失败，就用下面的代码  
+gem install wdm \-\- \-\-with-cflags=-Wno-implicit-function-declaration  
 个人搜索据说是3.3ruby在函数声明上和wdm不兼容
+
+你遇到的任何版本不对问题都可以在gemfile文件中进行强制更改，比如报错   
+Could not find wdm-0.1.1 in locally installed gems (Bundler::GemNotFound)  
+极有可能是gemfile中的版本设定了0.1.1而实际并没有安装或者不兼容
+
+在本地运行主页时  
+bundle exec jekyll serve  
+意为使用gemfile中指定的依赖版本运行，如果单纯jekyll serve则会自动挑选版本，可能会出现不兼容的问题。
 
 #### 3、使用Jekyll在库里进行新建
 使用命令行执行**jekyll new 指定路径文件夹**，这会在你指定的文件夹生成jekyll项目。  
