@@ -2,7 +2,7 @@
 [获取用户当前设置](#使用cpp库操作文件)  
 [获取用户信息](#获取用户信息)  
 [授权用户信息弹窗](#授权用户信息弹窗)  
-
+[关系数据链](#关系数据链)  
 
 ## 微信登陆
 wx.login(Object object)
@@ -79,11 +79,29 @@ boolean scope.WxFriendInteraction
 wx.getUserInfo(Object object)
 用户授权：需要 scope.userInfo。
 
-
 https://developers.weixin.qq.com/minigame/dev/api/open-api/user-info/wx.getUserInfo.html
 https://developers.weixin.qq.com/minigame/dev/guide/open-ability/user-info.html
+https://developers.weixin.qq.com/community/develop/doc/00022c683e8a80b29bed2142b56c01
 
 
+在小游戏的设置中，你需要填写和上传你的隐私政策。这是获取用户信息的前提条件，因为微信要求所有小游戏在获取用户信息前都必须有明确的隐私政策。
+
+https://developers.weixin.qq.com/minigame/dev/guide/open-ability/privacy.html
+https://developers.weixin.qq.com/community/minigame/doc/0004c84925817819b7ffd8b2356008
+https://developers.weixin.qq.com/minigame/dev/guide/base-ability/authorize.html#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5
+
+![](../../../assets/WeiXinMiniGame/8.png)
+![](../../../assets/WeiXinMiniGame/9.png)
+![](../../../assets/WeiXinMiniGame/10.png)
+
+## 开放数据域
+用户信息如果不存储在后台，可以在开放数据域中获取，但是有很多限制
+如果获取到的用户信息仅用于展示而不需要存储到后台，则可以通过开放数据域的接口 OpenDataContext-wx.getUserInfo 来获取。由于保证了数据无法流出，这个接口即使没有用户授权也能直接调用。
+https://developers.weixin.qq.com/minigame/dev/guide/open-ability/opendata/basic.html#%E9%99%90%E5%88%B6
+
+## 关系数据链
+可以获取好友的数据
+https://developers.weixin.qq.com/minigame/dev/guide/open-ability/open-data.html
 
 ## 和服务端交互
 RequestTask wx.request(Object object)
@@ -94,3 +112,7 @@ RequestTask wx.request(Object object)
 ## 授权用户信息弹窗
 UserInfoButton wx.createUserInfoButton(Object object)
 https://developers.weixin.qq.com/minigame/dev/api/open-api/user-info/wx.createUserInfoButton.html
+
+
+还有个接口是wx.authorize(Object object)
+但是说无法弹出窗口，请使用上面的button，就不知道这个接口存在意义是啥
