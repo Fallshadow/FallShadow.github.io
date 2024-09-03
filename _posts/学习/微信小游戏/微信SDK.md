@@ -1,8 +1,24 @@
+[用户隐私保护指引](#用户隐私保护指引)  
 [微信登陆](#微信登陆)  
 [获取用户当前设置](#使用cpp库操作文件)  
 [获取用户信息](#获取用户信息)  
 [授权用户信息弹窗](#授权用户信息弹窗)  
 [关系数据链](#关系数据链)  
+
+## 用户隐私保护指引
+在微信小游戏开发中，如果你想获取用户信息，你需要在微信小程序的开发者网页，设置用户隐私保护指引，因为有很多微信API使用的前提就是这份协议。  
+
+了解哪些API是收集了用户个人信息的API？
+https://developers.weixin.qq.com/community/minigame/doc/0004c84925817819b7ffd8b2356008
+文档最后提供了附录
+
+一般会使用的
+昵称、头像        wx.getUserInfo、wx.createUserInfoButton
+位置信息        wx.getFuzzyLocation
+微信朋友关系        wx.getFriendCloudStorage
+
+别忘了开启授权弹窗
+
 
 ## 微信登陆
 wx.login(Object object)
