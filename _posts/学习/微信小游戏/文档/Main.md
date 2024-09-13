@@ -35,6 +35,7 @@
 &emsp;[分享小游戏功能](#分享小游戏功能)  
 &emsp;[关联跳转公众号](#关联跳转公众号)  
 &emsp;[好友排行榜](#好友排行榜)  
+&emsp;[挂起后返回游戏](#挂起后返回游戏)  
 
 [遇到的一些问题](#遇到的一些问题)  
 &emsp;[博饼项目花屏问题](#博饼项目花屏问题)  
@@ -136,7 +137,7 @@
 [WXSDK git仓库](https://github.com/wechat-miniprogram/minigame-tuanjie-transform-sdk) ：一定是从git url这边添加，不要以下载package形式添加，会有问题。   
 [一些实用的功能Demo](https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/tree/main/Demo) ：可以将demo中的示例复制出来学习尝试。  
 [UnityWebGL wx 适配的所有的文档](https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/tree/main/Design) ：很多功能这里都有详细说明，遇到没做过的可以现在这里找找。   
-[Tuanjie wx 适配的所有的文档](https://wechat-miniprogram.github.io/minigame-unity-webgl-transform/)
+[Tuanjie wx 适配的所有的文档](https://wechat-miniprogram.github.io/minigame-unity-webgl-transform/)  
 [Tuanjie wx 适配的引擎方文档（unity cdn）](https://docs.unity.cn/cn/tuanjiemanual/Manual/AutoStreamingDemo.html)
 
 ## 接入
@@ -162,7 +163,9 @@ loading配置：
 SDK功能：  
 好友关系链：如果你想制作好友排行榜，之类的用到好友信息的，需要勾选。  
 社交组件：相互点赞交互之类的。这个没做过。  
-预加载微信字体：这个目的是减少首包大小，我们都知道字体会占用很大一部分资源，如果首包就把字体下载了，可能用户会卡在启动界面比较久的时间。但是我们还需要在下载资源包的界面显示一些文本该怎么办？这就是预加载微信字体做的。他会去加载微信本身字体来显示你需要的文本。你可以在下面的字体配置里，具体配置你需要的文本，为了精简，一般可以把下载资源界面用到的字都写在下面的自定义unicode中。不过其实除了使用微信自己的字体，我们其实也可以再建造一个自己的TMP字体文件，只包含指定的文字，也不会很大，也能优美地在下载资源界面展示给用户一些信息。这部分详细代码介绍，在微信功能那一趴细说。
+预加载微信字体：这个目的是减少首包大小，我们都知道字体会占用很大一部分资源，如果首包就把字体下载了，可能用户会卡在启动界面比较久的时间。但是我们还需要在下载资源包的界面显示一些文本该怎么办？这就是预加载微信字体做的。他会去加载微信本身字体来显示你需要的文本。你可以在下面的字体配置里，具体配置你需要的文本，为了精简，一般可以把下载资源界面用到的字都写在下面的自定义unicode中。不过其实除了使用微信自己的字体，我们其实也可以再建造一个自己的TMP字体文件，只包含指定的文字，也不会很大，也能优美地在下载资源界面展示给用户一些信息。
+
+[微信字体加载](https://wechat-miniprogram.github.io/minigame-unity-webgl-transform/Design/WXFont.html)
 
 调试编译选项：
 就如图配置就好。
@@ -533,6 +536,9 @@ public void Share() {
 手机上预览的效果
 
 
+[分享API不可以限定分享目标的证据](https://developers.weixin.qq.com/community/develop/doc/000c82b386461863793112b7e66400?_at=1726065621815)  
+[分享API不可以监听分享结果的证据](https://developers.weixin.qq.com/community/develop/doc/00028237734090de1bf8c1cb55b800)
+
 ## 关联跳转公众号
 ```Cpp
 public void NavigateToOtherMiniProgram() {
@@ -543,7 +549,8 @@ public void NavigateToOtherMiniProgram() {
     WX.NavigateToMiniProgram(navigateToMiniProgramOption);
 }
 ```
-需要在小游戏关联设置中关联两者才可以跳转
+需要在小游戏关联设置中关联两者才可以跳转  
+[API文档](https://developers.weixin.qq.com/minigame/dev/api/navigate/wx.navigateToMiniProgram.html)
 
 ## 好友排行榜
 ### 跑通官方示例了解具体做法
@@ -555,7 +562,41 @@ Canvas必须是overlay（测试camera会无法交互）
 RawImage最好将pivot设置为（0,0）方便计算微信接口的左上角，而且，一定要将X轴旋转180，旋转之后确认下RawImage位置。
 
 ### 查看我的示例
+### 参考网址
+[微信开放社区排行榜回答](https://developers.weixin.qq.com/community/develop/article/doc/0000ac7a2a4b280a61304d84d66413)  
+[CSDN排行榜回答1](https://blog.csdn.net/weixin_49814585/article/details/135142895)  
+[CSDN排行榜回答2](https://blog.csdn.net/qq_40364220/article/details/135403939)  
+[Unity排行榜文档](https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/OpenData.md)  
+[方便制作排行榜的网页工具](https://wechat-miniprogram.github.io/minigame-canvas-engine/playground.html)  
+[开放域好友接口文档](https://developers.weixin.qq.com/minigame/dev/guide/open-ability/open-data.html)
 
+## 挂起后返回游戏
+[OnShow文档](https://developers.weixin.qq.com/minigame/dev/api/base/app/life-cycle/wx.onShow.html)
+挂起后，游戏可能与服务器断开了连接，回到游戏时，需要进行检测重连操作。
+```Cpp
+public void OnShow() {
+    WX.OnShow((result) => {
+        Debug.Log($"[bobing] 回到游戏了！");
+        WebSocketManager.instance.WebSocketReConnect();
+    });
+}
+
+public void WebSocketReConnect() {
+    Debug.Log(gameMainSocket.ReadyState);
+    if(gameMainSocket.ReadyState != WebSocketState.Open) {
+        gameMainSocket.ConnectAsync();
+        isReConnected = true;
+    }
+}
+
+private void MainSocket_OnOpen(object sender, OpenEventArgs e) {
+    Debug.Log($"[Bobing][Socket_OnOpen] {mainAddress}");
+    if(isReConnected) {
+        isReConnected = false;
+        SendGameLogin(PlayerManager.instance.token); 
+    }
+}
+```
 
 # 遇到的一些问题
 ## 博饼项目花屏问题
