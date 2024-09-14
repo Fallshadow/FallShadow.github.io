@@ -40,6 +40,7 @@
 [遇到的一些问题](#遇到的一些问题)  
 &emsp;[博饼项目花屏问题](#博饼项目花屏问题)  
 &emsp;[打出包在微信小游戏工具一打开就报空](#打出包在微信小游戏工具一打开就报空)  
+&emsp;[IOS紫屏问题](#ios紫屏问题)  
 
 &emsp;[网络blob格式数据](#网络blob格式数据)  
 &emsp;[心跳bytes断开连接问题](#心跳bytes断开连接问题)  
@@ -143,7 +144,7 @@
 ## 接入
 通过查阅[适配入门文档](https://wechat-miniprogram.github.io/minigame-unity-webgl-transform/Design/SDKInstaller.html)可以逐步接入SDK，这里多贴出 “能力地图-生产提效包-快适配” 的路径
 ![](Image/02.png)
-进入生产提效包，这里顺便把高性能模式也点出来
+进入生产提效包，这里顺便把高性能模式也点出来.(不开这个的话，有一些IOS跑游戏可能会有白屏等显示问题，见[IOS紫屏问题](#ios紫屏问题)  )
 ![](Image/03.png)
 
 ## 使用和导出 
@@ -614,6 +615,11 @@ private void MainSocket_OnOpen(object sender, OpenEventArgs e) {
 ![](Image/4.png)
 
 所以遇到这种问题，可以先在unity release下先进行尝试，看看能不能有清晰的报错信息。
+
+
+## ios紫屏问题
+![](Image/26.png)
+这个就是生产提效包的高性能没开导致的问题。
 
 
 ## 网络blob格式数据
