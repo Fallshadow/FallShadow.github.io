@@ -540,11 +540,13 @@ public void Share() {
 ![](Image/21.png)  
 在微信开发者工具中查看是这个效果  
 ![](Image/22.png)  
-手机上预览的效果
-
+手机上预览的效果  
+![](Image/2.jpg)  
 
 [分享API不可以限定分享目标的证据](https://developers.weixin.qq.com/community/develop/doc/000c82b386461863793112b7e66400?_at=1726065621815)  
 [分享API不可以监听分享结果的证据](https://developers.weixin.qq.com/community/develop/doc/00028237734090de1bf8c1cb55b800)
+
+还有一种分享，是带Ticket的分享。好友在通过这个分享点击进去之后，客户端onshow接口会多一个ticket，可以通过服务端记录确认这个ticket，来实现分享并点击进入游戏后领取奖励的功能。这个还没做过。
 
 ## 关联跳转公众号
 ```Cpp
