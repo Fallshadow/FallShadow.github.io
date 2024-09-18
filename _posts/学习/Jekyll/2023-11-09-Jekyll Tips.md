@@ -37,6 +37,8 @@ Could not find wdm-0.1.1 in locally installed gems (Bundler::GemNotFound)
 bundle exec jekyll serve  
 意为使用gemfile中指定的依赖版本运行，如果单纯jekyll serve则会自动挑选版本，可能会出现不兼容的问题。
 
+不兼容其实也没有问题，使用 bundle update 命令将所有依赖更新到最新，然后再运行 jekyll serve 应该就可以了
+
 #### 3、使用Jekyll在库里进行新建
 使用命令行执行**jekyll new 指定路径文件夹**，这会在你指定的文件夹生成jekyll项目。  
 本地生成文件：
