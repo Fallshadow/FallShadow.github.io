@@ -9,3 +9,9 @@
 ## trial version
 
 这是个人版证书的水印
+
+## ab模式渲染变紫色
+
+这是因为在 AB 环境下 我们是使用 window 的 API 去显示 WebGL 的 资源。
+
+需要改一下渲染方式 -force-gles

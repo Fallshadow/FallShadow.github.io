@@ -22,5 +22,7 @@ Protocol 类主动创建所有业务管理类。再次整合接口。根据具�
 3：物理连接关闭或重启，需要进行物理连接，监测重连。 Disconnected ->  ConnectFailed  重连几次之后还连不上 会主界面？弹窗？
 
 
+Json 解析 unity 的不能搞字典，使用 Newtonsoft.Json
 
+心跳居然有人没有注意不要跟 timescale 挂钩，防止游戏的暂停影响网络
 

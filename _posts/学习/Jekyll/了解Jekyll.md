@@ -1,9 +1,11 @@
 https://jekyllrb.com/
 
 Ruby 是一种纯面向对象的语言，几乎所有的东西都是对象，包括数字、字符串和甚至代码块。
+
 RubyGems 是 Ruby 编程语言的包管理系统。它提供了一种标准化的方式来分发、安装和管理 Ruby 库和应用程序，这些库和应用程序被称为“gem”。
 
 Gemfile 是您的网站使用的 Gem 列表。每个 Jekyll 站点在主文件夹中都有一个 Gemfile。
+
 Bundler 是一个 Gem，用于安装 Gemfile 中的所有 Gem。
 
 ## liquid
@@ -51,7 +53,7 @@ Front Matter 前言：是放置在文件开头的两条三虚线之间的 YAML �
 
 ## 布局
 
-布局是可供网站中的任何页面使用并环绕页面内容的模板。它们存储在名为 _layouts 的目录中。
+布局是可供网站中的任何页面使用并环绕页面内容的模板。它使用 liquid 读取各个界面下的实际参数内容（比如 Front Matter）并展示。它们存储在根目录下名为 _layouts 的目录中。
 
 可以创建这样的文件 default.html
 
@@ -78,4 +80,55 @@ title: Home
 <h1>{{ "Hello World!" | downcase }}</h1>
 ```
 
-## include
+## 包含
+
+include，它允许你将 _includes 文件夹中的 html 内容直接插入到 indclude 的 位置。
+
+就比如很多网站都有的，顶部跳转导航，就可以使用 include “顶部导航 HTML” 来实现。当然，可以放在 layout 中，让各个使用了此 layout 的界面，都吃到导航，但也许你想要某个与众不同的界面也有导航，这就需要 include。
+
+让我们创建 _includes/navigation.html
+
+```html
+<nav>
+  <a href="/">Home</a>
+  <a href="/about.html">About</a>
+</nav>
+```
+
+应用到 _layouts/default.html
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }}</title>
+  </head>
+  <body>
+    {% include navigation.html %}
+    {{ content }}
+  </body>
+</html>
+```
+
+可以使用 page.url 获取当前界面的 url，以此判断导航子链接是不是当前界面，并标红色
+
+```html
+<nav>
+  <a href="/" {% if page.url == "/" %}style="color: red;"{% endif %}>
+    Home
+  </a>
+  <a href="/about" {% if page.url == "/about" %}style="color: red;"{% endif %}>
+    About
+  </a>
+</nav>
+```
+
+## a 标签
+
+```Cpp
+<a> 标签是 HTML 中的锚点标签，用于创建超链接。超链接可以将用户从一个页面导航到另一个页面、同一页面的不同部分、下载文件，或者启动电子邮件客户端。
+
+href 是 HTML 中 <a>（锚点）标签的一个属性，代表 "Hypertext Reference"。它用于指定链接目标的 URL（统一资源定位符）。当用户点击链接时，浏览器会导航到由 href 属性指定的地址。
+```
+
