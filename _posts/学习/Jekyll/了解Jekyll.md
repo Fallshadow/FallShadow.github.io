@@ -132,3 +132,85 @@ include，它允许你将 _includes 文件夹中的 html 内容直接插入到 i
 href 是 HTML 中 <a>（锚点）标签的一个属性，代表 "Hypertext Reference"。它用于指定链接目标的 URL（统一资源定位符）。当用户点击链接时，浏览器会导航到由 href 属性指定的地址。
 ```
 
+## 数据文件
+
+_data 文件夹存放数据文件。
+
+YAML 是 Ruby 生态系统中常见的一种格式。可以使用它来存储一组导航项。
+
+在 _data/navigation.yml 处创建数据文件。
+
+```Cpp
+- name: Home
+  link: /
+- name: About
+  link: /about.html
+```
+
+如此，便可以使用 site.data.navigation 找到此数据文件。便可以使用迭代输出每个导航，而不是写成堆的代码。
+
+```Cpp
+<nav>
+  {% for item in site.data.navigation %}
+    <a href="{{ item.link }}" {% if page.url == item.link %}style="color: red;"{% endif %}>
+      {{ item.name }}
+    </a>
+  {% endfor %}
+</nav>
+```
+
+## 资源
+
+assets 文件夹，其下创建 css image js 文件夹。
+
+我们之前在 include 的 navigation 中直接使用红色样式，这并不是一个好做法。
+
+使用标准 CSS 文件进行样式设置。这里我们使用 scss 文件。
+
+创建 assets/css/styles.scss
+
+```Cpp
+---
+---
+@import "main";
+```
+
+这句话告诉 Sass 我们已经在根目录下创建好了名为 _sass 的文件夹，并且查找 _sass 下名为 main.scss 的文件。
+
+```scss
+.current {
+    color: green;
+}
+```
+
+此时我们再更改 navigation
+
+```html
+<nav>
+  {% for item in site.data.navigation %}
+    <a href="{{ item.link }}"{% if page.url == item.link %} class="current"{% endif %}>
+      {{ item.name }}</a>
+  {% endfor %}
+</nav>
+```
+
+但还没完，样式表是跟随 layout 布局的。
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+  </head>
+  <body>
+    {% include navigation.html %}
+    {{ content }}
+  </body>
+</html>
+```
+
+总而言之，这个例子在资源文件夹中加入了css样式文件，并且此样式外链到了sass文件夹，设置详细内容，也就是css是一个总目录，真正子项样式都在sass文件夹中。然后样式是可以跟随布局的。
+
+
