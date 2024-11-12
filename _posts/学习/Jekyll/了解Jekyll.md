@@ -213,4 +213,59 @@ assets 文件夹，其下创建 css image js 文件夹。
 
 总而言之，这个例子在资源文件夹中加入了css样式文件，并且此样式外链到了sass文件夹，设置详细内容，也就是css是一个总目录，真正子项样式都在sass文件夹中。然后样式是可以跟随布局的。
 
+## post
+
+博客被放置在 _posts 文件夹下，且命名必须规范，发布日期，标题，扩展名。
+
+_posts/2018-08-20-bananas.md
+
+### 在 layout 下创建 post 布局
+
+```html
+---
+layout: default
+---
+<h1>{{ page.title }}</h1>
+<p>{{ page.date | date_to_string }} - {{ page.author }}</p>
+
+{{ content }}
+```
+
+此布局继承自 default
+
+### 在根目录下创建 Blog 导航页
+
+```html
+---
+layout: default
+title: Blog
+---
+<h1>Latest Posts</h1>
+
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+      {{ post.excerpt }}
+    </li>
+  {% endfor %}
+</ul>
+```
+
+site.posts : 所有 post
+post.url : 设置为 post 的输出路径
+post.title : 从 post 文件名中提取的，可以通过在 front matter 中设置 title 来覆盖
+post.excerpt : 默认是内容的第一段
+
+### 主导航数据增加 Blog
+
+```yaml
+- name: Home
+  link: /
+- name: About
+  link: /about
+- name: Blog
+  link: /blog
+```
+
 
