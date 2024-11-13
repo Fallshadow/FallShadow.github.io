@@ -268,4 +268,175 @@ post.excerpt : 默认是内容的第一段
   link: /blog
 ```
 
+## Collections
+
+收集作用是分类，官方示例中使用收集来以 authors 项进行分类。实际使用过程中可以以多种角度进行分类。
+
+### 配置收集
+
+在根目录创建 _config.yml 文件来收集。
+
+```yaml
+collections:
+  authors:
+```
+
+注意 _config.yml 是配置文件，如果想应用更改就要重启 jekyll 服务器。在 cmd 使用 ctrl + c 停止服务器，然后 jekyll serve 重新启动服务器。
+
+### 添加内容
+
+为收集添加内容需要在根目录下创建 _*collection_name* 的文件。在本例中，_authors
+
+在此文件夹下，为每个作者创建一个信息文档。
+
+```markdown
+---
+short_name: shadow
+name: Shadow Fall
+position: Creator
+---
+暗影大人是创造者。
+
+---
+short_name: chao
+name: Chao Sun
+position: Body
+---
+超是躯壳。
+```
+
+### Staff page
+
+site.authors 收集所有的作者。让我们将作者信息显示在 Staff page 员工界面上。
+
+```html
+
+---
+layout: default
+title: Staff
+---
+
+<h1>Staff</h1>
+
+<ul>
+  {% for author in site.authors %}
+    <li>
+      <h2>{{ author.name }}</h2>
+      <h3>{{ author.position }}</h3>
+      <p>{{ author.content | markdownify }}</p>
+    </li>
+  {% endfor %}
+</ul>
+
+```
+
+### 单独页面
+
+默认情况下，集合不会为其中分类创建页面，即使各个分类分别是一个 md，此时需要修改设置。
+
+```yaml
+collections:
+  authors:
+    output: true
+```
+
+这样就可以使用 author.url 链接到输出页面。
+
+```html
+
+---
+layout: default
+title: Staff
+---
+<h1>Staff</h1>
+
+<ul>
+  {% for author in site.authors %}
+    <li>
+      <h2><a href="{{ author.url }}">{{ author.name }}</a></h2>
+      <h3>{{ author.position }}</h3>
+      <p>{{ author.content | markdownify }}</p>
+    </li>
+  {% endfor %}
+</ul>
+
+```
+
+此时页面是一个简单的 md 页面.
+
+### 默认布局
+
+创建 author 布局
+
+```html
+---
+layout: default
+---
+<h1>{{ page.name }}</h1>
+<h2>{{ page.position }}</h2>
+
+{{ content }}
+```
+
+正常操作我们需要更改 author.md 本身的布局。这里我们使用配置默认完成这件事。
+
+
+```yaml
+defaults:
+  - scope:
+      path: ""
+      type: "authors"
+    values:
+      layout: "author"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+```
+
+### 将作者与页面作者关联以输出作者写过的文章
+
+修改 layout author 作者页的输出
+
+```Html
+---
+layout: default
+---
+<h1>{{ page.name }}</h1>
+<h2>{{ page.position }}</h2>
+
+{{ content }}
+
+<h2>Posts</h2>
+<ul>
+  {% assign filtered_posts = site.posts | where: 'author', page.short_name %}
+  {% for post in filtered_posts %}
+    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+```
+
+修改 layout post 让文章可以链接到作者
+
+```Html
+---
+layout: default
+---
+<h1>{{ page.title }}</h1>
+
+<p>
+  {{ page.date | date_to_string }}
+  {% assign author = site.authors | where: 'short_name', page.author | first %}
+  {% if author %}
+    - <a href="{{ author.url }}">{{ author.name }}</a>
+  {% endif %}
+</p>
+
+{{ content }}
+```
 
