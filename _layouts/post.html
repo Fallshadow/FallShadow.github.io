@@ -9,6 +9,11 @@ layout: default
   {% if author %}
     - <a href="{{ author.url }}">{{ author.name }}</a>
   {% endif %}
+
+  {% assign serie = site.series | where: 'serie_name', page.serie | first %}
+  {% if serie %}
+    - <a href="{{ author.url }}">{{ serie.serie_name }}</a>
+  {% endif %}
 </p>
 
 {{ content }}

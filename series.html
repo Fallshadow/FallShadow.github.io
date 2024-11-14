@@ -1,0 +1,15 @@
+---
+layout: default
+title: Series
+---
+<h1>Series</h1>
+
+<ul>
+  {% for serie in site.series %}
+    <li>
+      <h2><a href="{{ serie.url }}">{{ serie.serie_name }}</a></h2>
+      <h3>{{ serie.knowledge }}</h3>
+      <p>{{ serie.content | markdownify }}</p>
+    </li>
+  {% endfor %}
+</ul>

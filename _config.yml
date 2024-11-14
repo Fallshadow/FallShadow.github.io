@@ -38,6 +38,8 @@ permalink: /:categories/:title
 collections:
   authors:
     output: true
+  series:
+    output: true
 
 defaults:
   - scope:
@@ -50,6 +52,11 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+  - scope:
+      path: ""
+      type: "series"
+    values:
+      layout: "serie"
   - scope:
       path: ""
     values:
