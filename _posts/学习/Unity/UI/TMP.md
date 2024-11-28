@@ -5,3 +5,11 @@ https://github.com/wy-luke/Unity-TextMeshPro-Chinese-Characters-Set/tree/main
 3500 和 7000 汉字 自己酌情选择
 
 然后配置方面，Padding 一般 5 ，Packing Method 一般 Fast，Render Mode 一般 SDFAA， 分辨率 最大那个。
+
+图片字体，TMP_Sprite Asset，图片颜色可以更改。
+
+```Cpp
+<sprite=10 color=#FF0000> // 指定颜色
+<sprite=10 tint=1 color=#FFFFFF> // 跟随字体组件设置的颜色
+```
+
