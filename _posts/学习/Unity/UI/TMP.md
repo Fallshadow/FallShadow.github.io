@@ -13,3 +13,14 @@ https://github.com/wy-luke/Unity-TextMeshPro-Chinese-Characters-Set/tree/main
 <sprite=10 tint=1 color=#FFFFFF> // 跟随字体组件设置的颜色
 ```
 
+## ttf 查看所有字符
+
+win + R  charmap
+
+安装完ttf ，就可以在里面找到，然后搜索复制字体
+
+其实双击 ttf 打开也可以看个大概
+
+## 动态字体更改源字体不生效问题
+
+估计是缓存的部分没有生效，需要点击 Clear Dynamic Data，然后会有提示让你是不是要重新生成
