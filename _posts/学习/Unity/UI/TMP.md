@@ -13,7 +13,7 @@ https://github.com/wy-luke/Unity-TextMeshPro-Chinese-Characters-Set/tree/main
 <sprite=10 tint=1 color=#FFFFFF> // 跟随字体组件设置的颜色
 ```
 
-## ttf 查看所有字符
+## ttf 查看所有字符 查看字体字符
 
 win + R  charmap
 
