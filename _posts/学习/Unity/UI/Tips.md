@@ -1,3 +1,33 @@
+
+- [刷新布局排布](#刷新布局排布)
+- [进度条](#进度条)
+- [适配](#适配)
+  - [按不到](#按不到)
+  - [UI 数据](#ui 数据)
+  - [](#)
+
+## 刷新布局排布
+    public void SpawnItem(ConsumeItemInfo info, ItemCostShowType showType, bool showBg = false) {
+        var elm = pool.Spawn();
+        elm.Init(info, showType, showBg);
+        elm.transform.SetAsFirstSibling();
+
+        EndOfFrame(() => {
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)elm.transform);
+        });
+    }
+
+    /// <summary>
+    /// 帧末执行
+    /// </summary>
+    public Coroutine EndOfFrame(Action cb = null) {
+        return StartCoroutine(DoEndOfFrame(cb));
+    }
+
+    private IEnumerator DoEndOfFrame(Action cb = null) {
+        yield return new WaitForEndOfFrame();
+        cb?.Invoke();
+    }
 ## 进度条
 
 制作进度条时，在适应屏幕宽度情况下，更改 pivot 为 (0, 1)，如果进度条是倾斜的，不可以进行简单的 scale 拉伸，这时候需要使用九宫格 + SizeDetal 调节。
@@ -28,7 +58,7 @@ private void Update() {
 
 视觉上可以不调节，在程序上调节。
 
-### UI数据
+### UI 数据
 
 可以把 ui 使用到的数据放在 cache 中，在打开 UI 之前更改这份数据，然后再打开 UI 后，UI 默认就去读取那些数据。
 
