@@ -37,17 +37,23 @@ Could not find wdm-0.1.1 in locally installed gems (Bundler::GemNotFound)
 bundle exec jekyll serve  
 意为使用gemfile中指定的依赖版本运行，如果单纯jekyll serve则会自动挑选版本，可能会出现不兼容的问题。
 
-#### 3、使用Jekyll在库里进行新建
-使用命令行执行**jekyll new 指定路径文件夹**，这会在你指定的文件夹生成jekyll项目。  
-本地生成文件：
-![Jekyll new]({{ site.url }}/assets/JekyllNew.png){:width="512"}  
-- **index**、**about**和**404**：index是主页，你会发现其内容就只有一个模板。about是相关页。404就是404。  
-- **_posts**：存放着所有的文章，想加文章就在里面创建MD，要注意命名一定是**日期-标题**。
-- **_config.yml**：配置文件。  
-- **_site**：存放着所有由Jekyll处理生成的Html，可以理解为最终商店，我们不用管这个文件夹，git也应该忽略这个文件夹。
-- **Gemfile.lock**和**Gemfile**：这两个文件和依赖有关，我们也不用管。
+不兼容其实也没有问题，使用 bundle update 命令将所有依赖更新到最新，然后再运行 jekyll serve 应该就可以了
 
-然后在此文件夹下执行**jekyll serve**来运行本地模拟，就可以通过命令行里提到的网址在网页上查看效果。
+#### 3、使用Jekyll在库里进行新建
+
+使用命令行执行 **jekyll new 指定路径文件夹**，这会在你指定的文件夹生成jekyll项目。  
+
+本地生成Jekyll项目：  
+![Jekyll new](Images/JekyllNew.png)
+
+- **index**, **about** 和 **404** ：index是主页，你会发现其内容就只有一个模板。about是相关页。404就是404。  
+- **_posts** ：存放着所有的文章，想加文章就在里面创建 MD，要注意命名一定是 **日期-标题**。
+- **_config.yml** ：配置文件。  
+- **_site** ：存放着所有由 Jekyll 处理生成的 Html ，可以理解为最终商店，我们不用管这个文件夹，git 也应该忽略这个文件夹。
+- **Gemfile.lock** 和 **Gemfile**：这两个文件和依赖有关，我们也不用管。
+
+然后在此文件夹下执行 **jekyll serve** 来运行本地模拟，就可以通过命令行里提到的网址在网页上查看效果。
+
 #### 4、_config.yml
 注意，每次修改配置文件之后，要重启Jekyll serve才能看到效果。
 - 范围配置默认头信息：

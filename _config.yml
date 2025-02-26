@@ -35,6 +35,33 @@ plugins:
 # 默认文章永久链接为分类+标题
 permalink: /:categories/:title
 
+collections:
+  authors:
+    output: true
+  series:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "authors"
+    values:
+      layout: "author"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "series"
+    values:
+      layout: "serie"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
