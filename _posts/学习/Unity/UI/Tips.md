@@ -3,10 +3,13 @@
 - [进度条](#进度条)
 - [适配](#适配)
   - [按不到](#按不到)
-  - [UI 数据](#ui 数据)
+  - [UI 数据](#ui-数据)
   - [](#)
 
 ## 刷新布局排布
+
+下一帧  立刻刷新排布
+
     public void SpawnItem(ConsumeItemInfo info, ItemCostShowType showType, bool showBg = false) {
         var elm = pool.Spawn();
         elm.Init(info, showType, showBg);
