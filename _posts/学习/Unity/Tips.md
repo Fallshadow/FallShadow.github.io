@@ -125,6 +125,9 @@ Unityhub://6000.1.0b8
 
 Unityhub://6000.2.0a4
 
+最全 UnityHub 国际版
+https://blog.csdn.net/qq_36829186/article/details/123847081
+
 ## 自动设置脚本文件为 utf8
 
 ### DidReloadScripts 方法
