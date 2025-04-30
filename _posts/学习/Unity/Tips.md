@@ -229,3 +229,35 @@ charset = utf-8
 ```
 
 保存后，Git 会强制将所有 .cs 文件保存为 UTF-8 编码。
+
+## package 包拉取错误
+
+问题是：版本配置异常   
+通常 package 更新有两种方式  
+改动 manifest.json 提交  
+改动 manifest.json 后，启动 Unity 自动更新 package-lock.json，然后一起提交   
+
+发现你之前更新 48.2  的操作是   
+手动改了 manifest.json  ✔   
+然后改了 package-lock.json 的 version，但是 hash 还是 0.45.3 的版本 ❌   
+
+Unity 是拿 package-lock.json 的 version 和 manifest 做比对的，但是拉取的时候使用 hash  
+所以导致拉取的一直是 0.45.3 的版本   
+
+在 Packages/package-lock.json 里，每个包有类似这样的一段内容：
+
+```Cpp
+
+"com.xxx.your-package": 
+{  
+    "version": "0.48.2",
+    "depth": 0,
+    "source": "registry",
+    "dependencies": {},
+    "url": "https://..."
+    "hash": "f2b9ac045edc19f3ed2b1b3..." // 这个就是 hash
+}
+
+```
+
+Unity 是拿 package-lock.json 的 version 和 manifest 做比对的，发现不一样会去更新 package-lock 内容，这个 hash 也是 unity 这时自动生成的。
