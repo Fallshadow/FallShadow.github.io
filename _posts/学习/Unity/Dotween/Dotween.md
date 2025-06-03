@@ -54,3 +54,13 @@ seq.Append(tweenA)                // A 先执行
 # 默认 ease
 
 默认是 outquad，先快后慢
+
+# to
+
+```Cpp
+        DOTween.To(() => baseValue, x => baseValue = x, evolveValue, 0.5f)
+                 .SetEase(Ease.InOutQuad)
+                 .OnUpdate(() => {
+                     equipValue.text = baseValue.ToString();
+                 }).SetDelay(1f);
+```
