@@ -5,7 +5,9 @@ date: 2024-06-07
 categories: 游戏引擎
 excerpt_separator: ""
 ---
+
 ## mono介绍
+
 Mono 是 Microsoft [.NET Framework] 的一个开源实现。它最初的设计目的是为了将 .NET 语言（主要是 C#）引入 Windows 以外的平台。
 如今，它对于跨平台支持并不是绝对必要的，因为 Microsoft 一直致力于使 .NET 本身就可以跨平台。但 Mono 对于引擎脚本系统仍然非常有用，因为与 .NET Core 或 .NET Framework 不同，它提供了一个不错的 C/C++ API 来嵌入 .NET runtime。
 
