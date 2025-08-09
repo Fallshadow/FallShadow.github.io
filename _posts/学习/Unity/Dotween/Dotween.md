@@ -20,11 +20,47 @@ DOTween.Sequence()
     .Insert(star2StartTime, Star2.DOScaleX(StarEndScaleX, 0.7f / 4).SetLoops(2, LoopType.Yoyo))
     .Insert(star2StartTime + 0.7f, Star2.DOScaleX(StarEndScaleX, 0.7f / 4))
 
+    .Append(
+            DOTween.To(() => animExp, x => animExp = x, curExp, 0.5f)
+                .SetEase(Ease.InOutQuad)
+                .OnUpdate(() => {
+                    if (SetLevelProgress(preLevel, animExp)) {
+                        preLevel++;
+                        m_Properties.expLv.text = $"{preLevel}级";
+                    }
+                })
+            )
+    .AppendCallback(() => {                
+       // 回调 B 的内容  
+        })  
     .SetUpdate(true).Play();
+
+    var seq = DOTween.Sequence();  
+
+seq.Append(tweenA)                // A 先执行  
+   .Join(tweenE)                  // A 和 E 同步执行  
+   .AppendCallback(() => {  
+       // 回调 B  
+   })  
+   .Append(tweenC)                // C 执行  
+   .AppendInterval(0.5f)          // 延时 0.5 秒  
+   .AppendCallback(() => {  
+       // 回调 D  
+   });  
 ```
 
 # 旋转
 
-# 默认ease
+# 默认 ease
 
-默认是outquad，先快后慢
+默认是 outquad，先快后慢
+
+# to
+
+```Cpp
+        DOTween.To(() => baseValue, x => baseValue = x, evolveValue, 0.5f)
+                 .SetEase(Ease.InOutQuad)
+                 .OnUpdate(() => {
+                     equipValue.text = baseValue.ToString();
+                 }).SetDelay(1f);
+```

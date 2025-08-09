@@ -8,6 +8,7 @@
   - [模板文件](#模板文件)
   - [VS .editorconfig 配置 utf-8 编码](#vs-editorconfig-配置-utf-8-编码)
   - [Git 的编码配置](#git-的编码配置)
+- [package 包拉取错误](#package-包拉取错误)
 
 ## CMD
 
@@ -124,6 +125,8 @@ Unityhub://6000.0.40f1
 Unityhub://6000.1.0b8
 
 Unityhub://6000.2.0a4
+
+Unityhub://2022.3.13f1
 
 最全 UnityHub 国际版
 https://blog.csdn.net/qq_36829186/article/details/123847081
