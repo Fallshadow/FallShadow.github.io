@@ -1,3 +1,6 @@
+- [center](#center)
+
+
 ## center
 源自 14 世纪的古法语 centre，来自拉丁语 centrum“中心”，最初是绘图圆规的两个点的固定点
 | 单词          | 读音                   | 释义                                                      |
