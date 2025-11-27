@@ -83,8 +83,11 @@ CapsLock & m::
 }
 ```
 #### 代码笔记
+
+ahk1
+
 ```Cpp
-CapsLock & `;::
+CapsLock & H::
 Send,{End}
 Send,{Text};
 send,{enter}
@@ -100,8 +103,11 @@ CapsLock & I::send {up}
 CapsLock & J::send {left}
 CapsLock & L::send {right}
 CapsLock & K::send {down}
+
 CapsLock & O::send {END}
 CapsLock & U::send {home}
+CapsLock & P::Send {PgDn}
+CapsLock & Y::Send {PgUp}
 
 CapsLock & ENTER::
 send {END}
@@ -117,5 +123,45 @@ send {Text}``````
 send {up}
 Send {End}
 return
+```
+
+ahk2
+
+```Cpp
+CapsLock & H:: {
+    Send "{End}"
+    Send "{Text};"
+    Send "{Enter}"
+}
+
+CapsLock & c::Run "calc"
+
+CapsLock & F::Send "{Backspace}"
+CapsLock & D::Send "{Delete}"
+CapsLock & S::Send "{Text}_"
+
+CapsLock & I::Send "{Up}"
+CapsLock & J::Send "{Left}"
+CapsLock & L::Send "{Right}"
+CapsLock & K::Send "{Down}"
+
+CapsLock & O::Send "{End}"
+CapsLock & U::Send "{Home}"
+CapsLock & P::Send "{PgDn}"
+CapsLock & Y::Send "{PgUp}"
+
+CapsLock & Enter:: {
+    Send "{End}"
+    Send "{Enter}"
+}
+
+CapsLock & q:: {
+    Send "{Text}``````Cpp"  ; 6个反引号 + Cpp（原脚本逻辑）
+    Send "`n"               ; 换行
+    Send "`n"               ; 再换行
+    Send "{Text}``````"     ; 6个反引号闭合
+    Send "{Up}"             ; 上移一行（到代码块中间）
+    Send "{End}"            ; 光标移到行尾
+}
 ```
 
