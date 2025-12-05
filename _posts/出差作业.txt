@@ -1,0 +1,351 @@
+LightGroupStruct PCGFBXImporter::GetLightGroupStruct(const FbxNode* fbxNode, const LightGroupStruct& delault)
+{
+    LightGroupStruct ret = delault;
+    FbxProperty fbxProperty = fbxNode->FindProperty("LightType");
+    if (fbxProperty.IsValid())
+    {
+        ret.lightType = static_cast<FFSLightsType>(fbxProperty.Get<FbxInt>());
+    }
+
+    FindLightPropertyXYZ(fbxNode, "Directions", ret.dir);
+    FindLightPropertyXYZ(fbxNode, "Color", ret.color);
+    fbxProperty = fbxNode->FindProperty("VerticalAngle");
+    if (fbxProperty.IsValid())
+    {
+        ret.angle.x = static_cast<float>(fbxProperty.Get<FbxFloat>()) / 360.0f;
+    }
+    fbxProperty = fbxNode->FindProperty("HorizontalAngle");
+    if (fbxProperty.IsValid())
+    {
+        ret.angle.y = static_cast<float>(fbxProperty.Get<FbxFloat>()) / 360.0f;
+    }
+    fbxProperty = fbxNode->FindProperty("Directional");
+    if (fbxProperty.IsValid())
+    {
+        ret.diral = static_cast<LightDirectional>(fbxProperty.Get<FbxInt>());
+    }
+    fbxProperty = fbxNode->FindProperty("Freq");
+    if (fbxProperty.IsValid())
+    {
+        ret.freq = static_cast<float>(fbxProperty.Get<FbxFloat>());
+    }
+    fbxProperty = fbxNode->FindProperty("P_S_Index");
+    if (fbxProperty.IsValid())
+    {
+        ret.p_s_index = static_cast<int>(fbxProperty.Get<FbxInt>());
+    }
+    fbxProperty = fbxNode->FindProperty("Papi_Angle");
+    if (fbxProperty.IsValid())
+    {
+        ret.papi_angle = static_cast<float>(fbxProperty.Get<FbxFloat>());
+    }
+    return ret;
+}
+
+
+
+ void PCGFBXImporter::CreateLpMeshByMesh(FbxNode* fbxNode, const std::string& runWay, const LightGroupStruct& defaultData)
+ {
+     auto lightType = defaultData.lightType;
+     auto lastName = FFSAirportData::LPMESH_NAME;
+     if (defaultData.diral == LightDirectional::Directional)
+         lastName = FFSAirportData::LPMESHDIR_NAME;
+     else if (defaultData.diral == LightDirectional::BiDirectional)
+         lastName = FFSAirportData::LPMESHBI_NAME;
+     auto lpMeshName = fbxNode->GetName() + lastName;
+     if (runWay.size() > 0)
+         lpMeshName = fbxNode->GetName() + lastName;
+     FbxNode* nodeFBX = FbxNode::Create(mSdkManager, lpMeshName.c_str());
+     FbxMesh* batchMesh = FbxMesh::Create(mSdkManager, lpMeshName.c_str());
+     nodeFBX->AddNodeAttribute(batchMesh);
+     nodeFBX->SetShadingMode(FbxNode::eTextureShading);
+     fbxNode->GetParent()->AddChild(nodeFBX);
+
+     FbxProperty p2 = FbxProperty::Create(nodeFBX, FbxIntDT, "Directional", "");
+     p2.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+     p2.Set(static_cast<int>(defaultData.diral));
+
+     FbxProperty tempProerty = FbxProperty::Create(nodeFBX, FbxIntDT, "NodeAttributeType", "");
+     tempProerty.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+     tempProerty.Set(static_cast<int>(NodeAttributeType::LightPoint));
+
+     FbxProperty tempProerty2 = FbxProperty::Create(nodeFBX, FbxIntDT, "LightType", "");
+     tempProerty2.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+     tempProerty2.Set(static_cast<int>(lightType));
+
+     FbxProperty tempProerty3 = FbxProperty::Create(nodeFBX, FbxStringDT, "RwyNum", "");
+     tempProerty3.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+     tempProerty3.Set(FbxString(runWay.c_str()));
+
+     FbxProperty tempProerty4 = FbxProperty::Create(nodeFBX, FbxFloatDT, "Freq", "");
+     tempProerty4.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+     tempProerty4.Set(defaultData.freq);
+
+
+     FbxMesh* lMesh = fbxNode->GetMesh();
+     const int lVertexCount = lMesh->GetControlPointsCount();
+     FbxLayerElementVertexColor* lColorLayer = nullptr;
+     FbxLayerElementUserData* lDataLayer = nullptr;
+     FbxLayerElementArrayTemplate<float>* lDir0Layer = nullptr;
+     FbxLayerElementArrayTemplate<float>* lDir1Layer = nullptr;
+     FbxLayerElementArrayTemplate<float>* lDir2Layer = nullptr;
+     bool isHaveDirData = true;
+     if (lMesh->GetLayer(0))
+     {
+         lColorLayer = lMesh->GetLayer(0)->GetVertexColors();
+     }
+     else if(lMesh->GetLayer(1))
+     {
+         lColorLayer = lMesh->GetLayer(1)->GetVertexColors();
+     }
+     if (lMesh->GetLayer(0) && lMesh->GetLayer(0)->GetLayerElementOfType(FbxLayerElement::eUserData)) 
+     {
+         lDataLayer = static_cast<FbxLayerElementUserData*>(lMesh->GetLayer(0)->GetLayerElementOfType(FbxLayerElement::eUserData));
+     }
+     else if(lMesh->GetLayer(1) && lMesh->GetLayer(1)->GetLayerElementOfType(FbxLayerElement::eUserData)) 
+     {
+         lDataLayer = static_cast<FbxLayerElementUserData*>(lMesh->GetLayer(1)->GetLayerElementOfType(FbxLayerElement::eUserData));
+     }
+
+     if (!lDataLayer)
+         isHaveDirData = false;
+
+     if (!lColorLayer) 
+     {
+         AssertMsg(false, "{}[PCGImporter] ERROR lColorLayer!!!!!", sFfsLogHead);
+         return;
+     }
+
+     if (isHaveDirData)
+     {
+         lDir0Layer = (FbxLayerElementArrayTemplate<float>*)(lDataLayer->GetDirectArrayVoid("Directions_0"));
+         lDir1Layer = (FbxLayerElementArrayTemplate<float>*)(lDataLayer->GetDirectArrayVoid("Directions_1"));
+         lDir2Layer = (FbxLayerElementArrayTemplate<float>*)(lDataLayer->GetDirectArrayVoid("Directions_2"));
+         if (!lDir0Layer || !lDir1Layer || !lDir2Layer)
+         {
+             AssertMsg(false, "{}[PCGImporter] ERROR lDataLayer!!!!!!", sFfsLogHead);
+             return;
+         }
+     }
+
+     int trianglePointCount = lVertexCount * 2;
+     if (defaultData.diral == LightDirectional::OmniDirectional) 
+     {
+         trianglePointCount = static_cast<int>(lVertexCount / 5 * 6);
+     }
+     std::vector<FbxLayer*> lLayers;
+     lLayers.resize(4);
+     std::for_each(lLayers.begin(), lLayers.end(), [=](auto& v) {
+         auto index = batchMesh->CreateLayer();
+         v = batchMesh->GetLayer(index);
+     });
+     std::vector<FbxLayerElementUV*> lUVDiffuseLayers;
+     lUVDiffuseLayers.resize(4);
+     for (int i = 0; i < 4; i++)
+     {
+         lUVDiffuseLayers[i] = GetorCreateLightsUv(batchMesh, lLayers[i], trianglePointCount);
+     }
+     // create triangles
+     FbxLayer* lLayer = lLayers[0];
+
+     FbxLayerElementNormal* lLayerElementNormal = FbxLayerElementNormal::Create(batchMesh, "Normal");
+     FbxLayerElementVertexColor* lLayerElementColor = FbxLayerElementVertexColor::Create(batchMesh, "VertexColor");
+     FbxLayerElementTangent* lTangentLayer = FbxLayerElementTangent::Create(batchMesh, "Tangent");
+     FbxLayerElementBinormal* lBinormalLayer = FbxLayerElementBinormal::Create(batchMesh, "Binormals");
+
+     lLayerElementNormal->GetDirectArray().SetCount(trianglePointCount);
+     lLayerElementColor->GetDirectArray().SetCount(trianglePointCount);
+     lTangentLayer->GetDirectArray().SetCount(trianglePointCount);
+     lBinormalLayer->GetDirectArray().SetCount(trianglePointCount);
+
+     lLayerElementNormal->SetMappingMode(FbxLayerElement::eByControlPoint);
+     lLayerElementNormal->SetReferenceMode(FbxLayerElement::eDirect);
+     lLayerElementColor->SetMappingMode(FbxLayerElement::eByControlPoint);
+     lLayerElementColor->SetReferenceMode(FbxLayerElement::eDirect);
+     lTangentLayer->SetMappingMode(FbxLayerElement::eByControlPoint);
+     lTangentLayer->SetReferenceMode(FbxLayerElement::eDirect);
+     lBinormalLayer->SetMappingMode(FbxLayerElement::eByControlPoint);
+     lBinormalLayer->SetReferenceMode(FbxLayerElement::eDirect);
+
+     lLayer->SetNormals(lLayerElementNormal);
+     lLayer->SetVertexColors(lLayerElementColor);
+     lLayer->SetTangents(lTangentLayer);
+     lLayer->SetBinormals(lBinormalLayer);
+
+     FbxLayerElementTexture* lTextureDiffuseLayer = FbxLayerElementTexture::Create(batchMesh, "Diffuse");
+     lTextureDiffuseLayer->SetMappingMode(FbxLayerElement::eByPolygon);
+     lTextureDiffuseLayer->SetReferenceMode(FbxLayerElement::eIndexToDirect);
+     FbxLayerElementMaterial* lMaterialLayer = FbxLayerElementMaterial::Create(batchMesh, "materialLayer");
+     lMaterialLayer->SetMappingMode(FbxLayerElement::eByPolygon);
+     lMaterialLayer->SetReferenceMode(FbxLayerElement::eIndexToDirect);
+     lMaterialLayer->mDirectArray->SetCount(1);
+     lTextureDiffuseLayer->GetDirectArray().SetCount(1);
+     lTextureDiffuseLayer->GetDirectArray().SetAt(0, nullptr);
+     lMaterialLayer->mDirectArray->SetAt(0, FbxSurfacePhong::Create(mSdkManager, lpMeshName.c_str()));
+     lLayer->SetMaterials(lMaterialLayer);
+     lLayer->SetTextures(FbxLayerElement::eTextureDiffuse, lTextureDiffuseLayer);
+
+     // if (directional)
+     {
+         lUVDiffuseLayers[0]->GetDirectArray().Add(FbxVector2(-0.57735f, 0.0f));
+         lUVDiffuseLayers[0]->GetDirectArray().Add(FbxVector2(1.57735f, 0.0f));
+         lUVDiffuseLayers[0]->GetDirectArray().Add(FbxVector2(0.5f, 1.866025f));
+
+         lUVDiffuseLayers[1]->GetDirectArray().Add(FbxVector2(2.0f, 2.0f));
+         lUVDiffuseLayers[2]->GetDirectArray().Add(FbxVector2(0.0f, 0.0f));
+         lUVDiffuseLayers[3]->GetDirectArray().Add(FbxVector2(0.0f, 0.0f));
+     }
+
+     std::vector<FbxVector4> triangleCorners = {FbxVector4(-1.07735f, 0.5f, 0.0f, 1.0f), FbxVector4(1.07735f, 0.5f, 0.0f, 1.0f), FbxVector4(0.0f, -1.366025f, 0.0f, 1.0f)};
+
+     batchMesh->InitControlPoints(trianglePointCount);
+     int iLpCount = 0;
+     int iLpCreate = static_cast<int>(lVertexCount / 3);
+     if (defaultData.diral == LightDirectional::OmniDirectional) 
+         iLpCreate = static_cast<int>(lVertexCount / 5);
+
+     for (int i = 0; i < iLpCreate; i++)
+     {
+         int lIndexByPolygonVertex = i * 3;
+         if (defaultData.diral == LightDirectional::OmniDirectional)
+             lIndexByPolygonVertex = i * 5;
+         FbxVector4 lNormalDir = FbxVector4(0, 1.0, 0);
+         if (isHaveDirData)
+             lNormalDir = FbxVector4{lDir0Layer->GetAt(lIndexByPolygonVertex), lDir1Layer->GetAt(lIndexByPolygonVertex), lDir2Layer->GetAt(lIndexByPolygonVertex)};
+         FbxVector4 lAngleDir = FbxVector4{defaultData.angle.x, defaultData.angle.y, 0.0};
+
+         FbxVector4 lPos = lMesh->GetControlPointAt(lIndexByPolygonVertex);
+         auto lColorIndex = lColorLayer->GetIndexArray().GetAt(lIndexByPolygonVertex);
+         auto lColor = lColorLayer->GetDirectArray().GetAt(lColorIndex);
+
+         lUVDiffuseLayers[2]->GetDirectArray().SetAt(0, FbxVector2(lAngleDir[0], lAngleDir[1]));
+         lUVDiffuseLayers[3]->GetDirectArray().SetAt(0, FbxVector2(lAngleDir[0], lAngleDir[1]));
+
+
+         double r = 0.00f;
+         double r2 = 0.00f;
+         std::vector<FbxVector4> trianglePos = {FbxVector4(lPos[0] - r, lPos[1] + r, lPos[2]), FbxVector4(lPos[0] - r, lPos[1] - r, lPos[2]), FbxVector4(lPos[0] + r, lPos[1] - r, lPos[2])};
+         std::vector<FbxVector4> trianglePos2 = {FbxVector4(lPos[0] - r2, lPos[1] + r2, lPos[2]), FbxVector4(lPos[0] + r2, lPos[1] - r2, lPos[2]), FbxVector4(lPos[0] + r2, lPos[1] + r2, lPos[2])};
+         //std::vector<FbxVector4> trianglePos = { FbxVector4(0 - r, 0 + r, 0), FbxVector4(0 - r, 0 - r, 0), FbxVector4(0 + r, 0 - r, 0) };
+         //std::vector<FbxVector4> trianglePos2 = { FbxVector4(0 - r2, 0 + r2, 0), FbxVector4(0 + r2, 0 - r2, 0), FbxVector4(0 + r2,0 + r2,0) };
+         
+         for (int xx = 0; xx < 2; xx++)
+         {
+             for (int j = 0; j < trianglePos.size(); j++)
+             {
+                 if (xx == 0)
+                     batchMesh->SetControlPointAt(trianglePos[j], iLpCount + j);
+                 else
+                     batchMesh->SetControlPointAt(trianglePos2[j], iLpCount + j);
+             }
+             batchMesh->BeginPolygon();
+             for (int k = 0; k < 3; k++)
+             {
+                 lLayerElementNormal->GetDirectArray().SetAt(iLpCount, lNormalDir);
+                 lLayerElementColor->GetDirectArray().SetAt(iLpCount, lColor);
+                 lTangentLayer->GetDirectArray().SetAt(iLpCount, triangleCorners[k]);
+                 lBinormalLayer->GetDirectArray().SetAt(iLpCount, FbxVector4(1.0f, 1.0f, 1.0f, 1.0f));
+                 lUVDiffuseLayers[0]->GetIndexArray().SetAt(iLpCount, k);
+                 lUVDiffuseLayers[1]->GetIndexArray().SetAt(iLpCount, 0);
+                 lUVDiffuseLayers[2]->GetIndexArray().SetAt(iLpCount, 0);
+                 lUVDiffuseLayers[3]->GetIndexArray().SetAt(iLpCount, 0);
+                 batchMesh->AddPolygon(iLpCount);
+                 iLpCount++;
+             }
+             batchMesh->EndPolygon();
+         }
+
+         // new function
+         // it can create light lamp base foliage comp!!
+         if (FFSAirportData::GetInstance()->GetImportSettingRaw().UseFoliageLight)
+             AddLightFoliageData(fbxNode, runWay, lPos, lColor, lNormalDir, defaultData);
+     }
+ }
+
+
+ 
+    void PCGFBXImporter::AddLightFoliageData(FbxNode* fbxNode, const std::string& runWay, FbxVector4 position, FbxColor color, FbxVector4 dir, const LightGroupStruct& defaultData)
+    {
+        /*if ((runWay == "04") && defaultData.lightType == FFSLightsType::Runway_Edge_Light)
+            LOG_INFO("ss");
+        if ((runWay == "22") && defaultData.lightType == FFSLightsType::Runway_Edge_Light)
+            LOG_INFO("ss");*/
+        const auto& canExportType = FFSAirportData::GetInstance()->mFoliageLightType;
+        if (canExportType.find(defaultData.lightType) == canExportType.end())
+            return;
+        auto& guideData = FFSAirportData::GetInstance()->mGuideLightFbx;
+        FFSAirportData::LightIndex indexTemp{runWay, defaultData.lightType, LightGroupStruct::GetLightColor(color), defaultData.p_s_index};
+        const auto& colorRef = reflection::EnumTypeOf<FFSLightColor>();
+        const auto& typeRef = reflection::EnumTypeOf<FFSLightsType>();
+        auto colorName = colorRef.name(indexTemp.color);
+        auto typeName = typeRef.name(defaultData.lightType);
+        if (guideData.find(indexTemp) == guideData.end())
+        {
+            FbxNode* node = CreateLpMeshFoliage(fbxNode, runWay, defaultData, colorName);
+            guideData[indexTemp] = node;
+        }
+        FbxNode* newNode = guideData[indexTemp];
+        auto& allFoliageData = FFSAirportData::GetInstance()->mFoliageLightData;
+        auto& foliageData = allFoliageData[newNode];
+        //fbxsdk::FbxVector4 fbxPos = ComputeTotalMatrix(newNode).MultT(position);
+        const FbxExportConfigData& fbxExportConfigData = FFSAirportData::GetInstance()->GetExportConfig();
+        const auto& wgs84 = fbxExportConfigData.wgs84Data;
+        Double3 latlonalt = Double3(wgs84.mLatitude, wgs84.mLongitude, wgs84.mElevation);
+        auto cePos = FBXPointToFloat3Remap(position);
+        if (FFSAirportData::GetInstance()->GetImportSettingRaw().UseCurvation)
+            cePos = FFSAirportData::GetInstance()->GetPointMeshCurvation(cePos, latlonalt, fbxExportConfigData.rectData[1], fbxExportConfigData.rectData[2]);
+        Transform transform;
+        transform.translation = cePos;
+        transform.scale = Float3(1.0f, 1.0f, 1.0f);
+        transform.rotation = Quaternion::CreateFrom2Vectors(Float3(0, 0, 1.0), FBXPointToFloat3Remap(dir));
+        foliageData.transform.push_back(transform);
+        const auto& foliageMap = FFSAirportData::GetInstance()->GetFoliageLightMap();
+        
+        if (foliageMap.find(typeName + "_" + colorName) != foliageMap.end())
+        {
+            auto prefabpath = foliageMap.at(typeName + "_" + colorName);
+            auto pathvec = FFSAirportData::GetInstance()->GetPrefabMeshMatPath(prefabpath);
+            foliageData.assetPath = std::move(pathvec);
+        }
+        else
+        {
+            foliageData.assetPath = {};
+        }
+    }
+
+
+    FbxNode* PCGFBXImporter::CreateLpMeshFoliage(FbxNode* fbxNode, const std::string& runWay, const LightGroupStruct& defaultData, const std::string& colorName)
+    {
+        std::string name = fbxNode->GetName() + colorName + std::string("_Foliage");
+        FbxNode* nodeFBX = FbxNode::Create(mSdkManager, name.c_str());
+        fbxNode->GetParent()->AddChild(nodeFBX);
+
+        FbxProperty p2 = FbxProperty::Create(nodeFBX, FbxIntDT, "Directional", "");
+        p2.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+        p2.Set(static_cast<int>(defaultData.diral));
+
+        FbxProperty tempProerty = FbxProperty::Create(nodeFBX, FbxIntDT, "NodeAttributeType", "");
+        tempProerty.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+        tempProerty.Set(static_cast<int>(NodeAttributeType::LightPoint));
+
+        FbxProperty tempProerty2 = FbxProperty::Create(nodeFBX, FbxIntDT, "LightType", "");
+        tempProerty2.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+        tempProerty2.Set(static_cast<int>(defaultData.lightType));
+
+        FbxProperty tempProerty3 = FbxProperty::Create(nodeFBX, FbxStringDT, "RwyNum", "");
+        tempProerty3.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+        tempProerty3.Set(FbxString(runWay.c_str()));
+
+        FbxProperty tempProerty4 = FbxProperty::Create(nodeFBX, FbxFloatDT, "Freq", "");
+        tempProerty4.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+        tempProerty4.Set(defaultData.freq);
+
+        if (defaultData.IsNeedPapiIndex())
+        {
+            FbxProperty tempProerty5 = FbxProperty::Create(nodeFBX, FbxIntDT, "P_S_Index", "");
+            tempProerty5.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+            tempProerty5.Set(defaultData.p_s_index);
+        }
+
+        return nodeFBX;
+    }
