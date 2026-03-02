@@ -3,7 +3,7 @@
 
 #define ENABLE_VIEW_MODE_VISUALIZE
 
-#include "../../ShaderLibrary/Common.hlsl"
+#include "Shader01_Common.hlsl"
 #if defined(PARTICLE) && PARTICLE == 1
 #include "Common/ParticleSceneData.hlsl"
 #else

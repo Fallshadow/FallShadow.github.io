@@ -1,5 +1,8 @@
 直接搜索[官方文档](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/geographically-accurate-sun-positioning-tool-in-unreal-engine)
 
+
+SunPositionCalculator
+
 # 自制月亮
 
 在低于 UE 5.6 版本的情况下，无法使用天穹。

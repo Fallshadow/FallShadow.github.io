@@ -42,7 +42,7 @@ bool ANISOTROPIC_SAMPLE;\
 Texture2D<float4> _MROTex : register(space1);
 Texture2D<float4> _EmissiveMap : register(space1);
 
-#include "/Material/Lit/SurfaceShaderIncludes.hlsl"
+#include "Shader01_SurfaceShaderIncludes.hlsl"
 
 SHADER_CONST(bool, ALPHA_CLIP, false);
 SHADER_CONST(bool, USE_NIGHT_LIGHT, false);
