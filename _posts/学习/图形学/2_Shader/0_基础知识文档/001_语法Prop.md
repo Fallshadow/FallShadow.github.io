@@ -30,8 +30,8 @@ _MainTex("Sprite Texture", 2D) = "white" {}
 float XXXX_ST;
 // _MainTex_ST.xy  // Tiling
 // _MainTex_ST.zw  // Offset
-o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-o.uv = v.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw
+o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
+o.uv.xy = v.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw
 ```
 TRANSFORM_TEX 是 unity 的一个宏，它相当于下面的那个，总之你有贴图之后，可以直接声明 _ST 后缀，来使用贴图的 Tiling 和 Offset
 
