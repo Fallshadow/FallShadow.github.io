@@ -2,6 +2,7 @@
   - [\_ST](#_st)
 - [Range 范围滑块属性](#range-范围滑块属性)
 - [标记](#标记)
+- [枚举](#枚举)
 
 
 用于定义材质属性，这些属性可以在 Unity 编辑器中通过材质面板进行调整，从而影响 Shader 的行为和外观。
@@ -27,17 +28,17 @@ _MainTex("Sprite Texture", 2D) = "white" {}
 对于每一个贴图，Unity 会按命名规则自动提供/绑定参数，你可以直接在 Pass 中声明
 
 ```HLSL
-float XXXX_ST;
+float4 XXXX_ST;
 // _MainTex_ST.xy  // Tiling
 // _MainTex_ST.zw  // Offset
 o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
-o.uv.xy = v.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw
+o.uv.xy = v.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 ```
 TRANSFORM_TEX 是 unity 的一个宏，它相当于下面的那个，总之你有贴图之后，可以直接声明 _ST 后缀，来使用贴图的 Tiling 和 Offset
 
 ### Range 范围滑块属性
 
-Range(0, 1) 滑块
+_Range("Range", range(0,1)) = 1
 
 ### 标记
 
@@ -75,3 +76,7 @@ Range(0, 1) 滑块
     SomeKeyword : 这是一个预处理器符号或关键字。当复选框被选中时，这个关键字会被定义，Shader 可以根据这个关键字来决定是否执行某些代码块。
 
     Float : 指定属性的类型为浮点数。尽管在 Inspector 中显示为复选框，但在 Shader 中它实际上是一个浮点数（0 或 1）
+
+### 枚举
+
+[Enum(Normal,0,View,1,Light,2,ViewLight,3,Fresnel,4,MipByNormalYSnow,5,MipColorRByRange,6)]_Type("Type", Float) = 0
