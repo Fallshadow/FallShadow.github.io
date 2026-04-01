@@ -3,6 +3,7 @@
 - [Range 范围滑块属性](#range-范围滑块属性)
 - [标记](#标记)
 - [枚举](#枚举)
+- [全局变量](#全局变量)
 
 
 用于定义材质属性，这些属性可以在 Unity 编辑器中通过材质面板进行调整，从而影响 Shader 的行为和外观。
@@ -80,3 +81,53 @@ _Range("Range", range(0,1)) = 1
 ### 枚举
 
 [Enum(Normal,0,View,1,Light,2,ViewLight,3,Fresnel,4,MipByNormalYSnow,5,MipColorRByRange,6)]_Type("Type", Float) = 0
+
+### 全局变量
+
+shader 里声明同名变量就能用，不需要 Properties
+
+CPP：Shader.SetGlobalVector("_LightPointPos", transform.position);
+
+Shader Pass：float4 _LightPointPos;
+
+```Cpp
+using UnityEngine;
+
+[ExecuteInEditMode]
+public class ASE_Unlit_021_LightEffect : MonoBehaviour
+{
+    private Light m_light;
+
+    void Start()
+    {
+        m_light = GetComponent<Light>();
+    }
+    
+    void Update()
+    {
+        Vector4 lightPointColorAndRange = m_light.color * m_light.intensity;
+        lightPointColorAndRange.w = m_light.range;
+
+        
+        if (m_light.type == LightType.Point)
+        {
+            Shader.SetGlobalVector(ShaderID.Light021PointColorAndRange, lightPointColorAndRange);
+            Shader.SetGlobalVector(ShaderID.Light021PointPos, transform.position);
+        }
+        
+        if (m_light.type == LightType.Spot)
+        {
+            Shader.SetGlobalVector(ShaderID.Light021SpotColorAndRange, lightPointColorAndRange);
+            Shader.SetGlobalVector(ShaderID.Light021SpotPos, transform.position);
+        }
+    }
+}
+
+public static class ShaderID
+{
+    public static readonly int Light021PointColorAndRange = Shader.PropertyToID("_Light021PointColorAndRange");
+    public static readonly int Light021PointPos = Shader.PropertyToID("_Light021PointPos");
+    public static readonly int Light021SpotColorAndRange = Shader.PropertyToID("_Light021SpotColorAndRange");
+    public static readonly int Light021SpotPos = Shader.PropertyToID("_Light021SpotPos");
+}
+```
