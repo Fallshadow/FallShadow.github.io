@@ -1,3 +1,25 @@
+- [OFPA](#ofpa)
+  - [如何启用](#如何启用)
+  - [子关转换](#子关转换)
+- [开放世界地图](#开放世界地图)
+  - [Actor 设置](#actor-设置)
+  - [WorldPartitionStreamingSource](#worldpartitionstreamingsource)
+  - [运行时网格](#运行时网格)
+    - [Grid 设置](#grid-设置)
+  - [使用体积加载](#使用体积加载)
+  - [生成小地图](#生成小地图)
+  - [生成 HLOD](#生成-hlod)
+    - [分配 HLOD](#分配-hlod)
+    - [预览 HLOD](#预览-hlod)
+- [性能检测](#性能检测)
+  - [运行后 Log](#运行后-log)
+  - [运行时监测](#运行时监测)
+- [优化实践](#优化实践)
+  - [动态加载策略：](#动态加载策略)
+- [Level Instancing](#level-instancing)
+  - [两种关卡实例](#两种关卡实例)
+
+
 # OFPA
 
 one file per actor 每个演员一个文件，最大化提高团队处理演员的速度，即一个人在改这个 actor，另一个人可以去改另一个 actor，而不必等待。
@@ -86,3 +108,8 @@ Unreal Insights 工具分析
 飞行时加载更大范围的网格单元。
 
 地面移动时减少加载范围。
+
+# Level Instancing
+
+## 两种关卡实例
+
