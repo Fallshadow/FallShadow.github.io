@@ -11,6 +11,7 @@
   - [生成 HLOD](#生成-hlod)
     - [分配 HLOD](#分配-hlod)
     - [预览 HLOD](#预览-hlod)
+- [调试](#调试)
 - [性能检测](#性能检测)
   - [运行后 Log](#运行后-log)
   - [运行时监测](#运行时监测)
@@ -75,6 +76,11 @@ world setting 里 开启 Use External Actors
 
 ### 预览 HLOD
 
+# 调试
+
+wp.Runtime.ToggleDrawRuntimeHash2D 开关世界分区运行时哈希的2D调试显示。
+wp.Runtime.ToggleDrawRuntimeHash3D 开关世界分区运行时哈希的3D调试显示。
+
 
 # 性能检测
 
@@ -112,4 +118,3 @@ Unreal Insights 工具分析
 # Level Instancing
 
 ## 两种关卡实例
-
